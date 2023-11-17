@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import entidade.Administrador;
 /**
- *
+ *djshnbfiudncudsbfvdnsfuh
  * @author User
  */
 public class AdministradorDAO {
