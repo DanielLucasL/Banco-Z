@@ -2,14 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package java;
+package model;
 
 /**
  *
- * @author danie
+ * @author User
  */
 public class Transferencia {
-   private int id;
+    private int id;
     private int idcontadoremetente;
     private String nomedoremetente;
     private int cpfdoremetente;
@@ -90,5 +90,4 @@ public class Transferencia {
     public void setTipodaconta(String tipodaconta) {
         this.tipodaconta = tipodaconta;
     }
-    
 }

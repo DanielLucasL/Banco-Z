@@ -2,14 +2,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package java;
+package model;
+
+import java.util.Date;
 
 /**
  *
- * @author danie
+ * @author User
  */
 public class Deposito {
     private int id;
+    private Date data;
+
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
     private int idcontadoremetente;
     private String nomedoremetente;
     private int cpfdoremetente;
@@ -72,6 +83,4 @@ public class Deposito {
     public void setContadobeneficiado(int contadobeneficiado) {
         this.contadobeneficiado = contadobeneficiado;
     }
-    
-    
 }

@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package java;
+package model;
 
 /**
  *
- * @author danie
+ * @author User
  */
 public class Tipo {
     public static final String VALUE_ONE = "";
@@ -28,5 +28,4 @@ public class Tipo {
             this.Tipo = VALUE_ONE;
         }
     }
-
 }

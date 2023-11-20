@@ -2,14 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package java;
+package model;
 
 /**
  *
- * @author danie
+ * @author User
  */
 public abstract class Usuario {
     private int id;
+    private int cpf;
     private Tipo tipo;
     private String nome;
     private String senha;
@@ -18,7 +19,14 @@ public abstract class Usuario {
      public int getId() {
         return id;
     }
-
+     public int getCpf() {
+        return cpf;
+    }
+   
+    public void setCpf(int cpf) {
+        this.cpf = cpf;
+    }
+    
     public void setId(int id) {
         this.id = id;
     }
@@ -47,9 +55,5 @@ public abstract class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-
-  
-
  
-
 }
