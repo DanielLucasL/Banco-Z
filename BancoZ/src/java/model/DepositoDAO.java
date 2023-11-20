@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.sql.PreparedStatement;
@@ -10,110 +6,99 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import entidade.Deposito;
 
-/**
- *
- * @author User
- */
-public class DepositoDAO implements Dao<Deposito> {
-    @Override
-    public Deposito get(int id) {
+public class DepositoDAO{
+    
+    public void Inserir(Deposito deposito) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM Depositos WHERE ID = ? ");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO contas (contadepositante, contadepositario, valor)"
+                    + " VALUES (?,?,?)");
+            sql.setInt(1, deposito.getContaDepositante());
+            sql.setInt(2, deposito.getContaDepositario());
+            sql.setDouble(3, deposito.getValor());
+            sql.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        } finally {
+            conexao.closeConexao();
+        }
+    }
+
+    public Deposito getConta(int id) throws Exception {
+        Conexao conexao = new Conexao();
+        try {
+            Deposito deposito = new Deposito();
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM contas WHERE ID = ? ");
             sql.setInt(1, id);
             ResultSet resultado = sql.executeQuery();
-            Deposito deposito = new Deposito();
-
             if (resultado != null) {
                 while (resultado.next()) {
                     deposito.setId(Integer.parseInt(resultado.getString("ID")));
-                    deposito.setDeposito(resultado.getString("DEPOSITO"));
-                    deposito.setData(resultado.getString("DATA"));
-                    deposito.setId(Integer.parseInt(resultado.getString("IDUSUARIO")));
+                    deposito.setContaDepositante(Integer.parseInt(resultado.getString("ContaDepositante")));
+                    deposito.setContaDepositario(Integer.parseInt(resultado.getString("ContaDepositario")));
+                    deposito.setValor(Double.parseDouble(resultado.getString("VALOR")));
                 }
             }
             return deposito;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Query de select (get deposito) incorreta");
+            throw new RuntimeException("Query de select (get) incorreta");
         } finally {
             conexao.closeConexao();
         }
     }
 
-    @Override
-    public void insert(Deposito t) {
-
+    public void Alterar(Deposito deposito) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Deposito (deposito, data, idusuario) VALUES (?,?,?)");
-            sql.setString(1, t.getDeposito());
-            sql.setString(2, t.getData());
-            sql.setInt(3, t.getIdusuario());
+            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE contas SET contadepositante = ?, contadepositario = ?, valor = ?  WHERE ID = ? ");
+            sql.setInt(1, deposito.getContaDepositante());
+            sql.setInt(2, deposito.getContaDepositario());
+            sql.setDouble(3, deposito.getValor());
             sql.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Query de insert (deposito) incorreta");
+            throw new RuntimeException("Query de update (alterar) incorreta");
         } finally {
             conexao.closeConexao();
         }
     }
 
-    @Override
-    public void update(Deposito t) {
+    public void Excluir(Deposito deposito) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE Contas SET deposito = ?, data = ?, idusuario = ?, senha = ?  WHERE ID = ? ");
-            sql.setString(1, t.getDeposito());
-            sql.setString(2, t.getData());
-            sql.setInt(3, t.getIdusuario());
-
+            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM contas WHERE ID = ? ");
+            sql.setInt(1, deposito.getId());
             sql.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Query de update (alterar deposito) incorreta");
+            throw new RuntimeException("Query de delete (excluir) incorreta");
         } finally {
             conexao.closeConexao();
         }
     }
 
-    @Override
-    public void delete(int id) {
-        Conexao conexao = new Conexao();
-        try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM Depositos WHERE ID = ? ");
-            sql.setInt(1, id);
-            sql.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Query de delete (excluir deposito) incorreta");
-        } finally {
-            conexao.closeConexao();
-        }
-    }
-
-    @Override
-    public ArrayList<Deposito> getAll() {
-
+    public ArrayList<Deposito> ListaDeDeposito() {
         ArrayList<Deposito> meusDepositos = new ArrayList();
         Conexao conexao = new Conexao();
         try {
-            String selectSQL = "SELECT * FROM Depositos";
+            String selectSQL = "SELECT * FROM contas order by nome";
             PreparedStatement preparedStatement;
             preparedStatement = conexao.getConexao().prepareStatement(selectSQL);
             ResultSet resultado = preparedStatement.executeQuery();
             if (resultado != null) {
                 while (resultado.next()) {
-                    Deposito Deposito = new Deposito(resultado.getInt("ID"),resultado.getString("DEPOSITO"),
-                            resultado.getString("DATA"),
-                            resultado.getInt("IDUSUARIO"),
-                            resultado.getInt("IDCATEGORIA")
-                    );
-                    meusDepositos.add(Deposito);
+                    Deposito deposito = new Deposito(
+                            Integer.parseInt(resultado.getString("ContaDepositante")),
+                            Integer.parseInt(resultado.getString("ContaDepositario")),
+                            Double.parseDouble(resultado.getString("VALOR")));
+                    deposito.setId(Integer.parseInt(resultado.getString( "ID")));
+                    meusDepositos.add(deposito);
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Query de select (GetAll) incorreta");
+            throw new RuntimeException("Query de select (ListaDeConta) incorreta");
         } finally {
             conexao.closeConexao();
         }

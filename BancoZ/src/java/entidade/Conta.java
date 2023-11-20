@@ -1,61 +1,42 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package entidade;
 
-/**
- *
- * @author User
- */
 public class Conta {
-    private int id;
-    private int numerodaconta;
+    private int numConta;
+    private String cpf;
     private double saldo;
-    private String extrato;
-    private int idcliente;
 
- 
-    public int getId() {
-        return id;
+    public Conta(String cpf, double saldo) {
+        this.cpf = cpf;
+        this.saldo = saldo;
     }
     
-    public int getNumerodaconta() {
-        return numerodaconta;
+    public Conta() {
+        this.numConta = 0;
+        this.cpf = "";
+        this.saldo = 0;
+    }
+
+    public int getNumConta() {
+        return numConta;
+    }
+
+    public void setNumConta(int numConta) {
+        this.numConta = numConta;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public double getSaldo() {
         return saldo;
     }
 
-    public String getExtrato() {
-        return extrato;
-    }
-
-    public int getIdcliente() {
-        return idcliente;
-    }
-    
-    public void setId(int id) {
-        this.id = id;
-    }
-     public void setNumerodaconta(int numerodaconta) {
-        this.numerodaconta = numerodaconta;
-    }
-
-
     public void setSaldo(double saldo) {
         this.saldo = saldo;
-    }
-
-    public void setExtrato(String extrato) {
-        this.extrato = extrato;
-    }
-
-    public void setIdcliente(int idcliente) {
-        this.idcliente = idcliente;
-    }
-    public void decrementarsaldo(double valor){
-       saldo=saldo-valor;
     }
 }

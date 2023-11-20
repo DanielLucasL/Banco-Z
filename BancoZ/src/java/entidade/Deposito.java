@@ -1,75 +1,54 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package entidade;
 
-/**
- *
- * @author User
- */
 public class Deposito {
     private int id;
-    private int idcontadoremetente;
-    private String nomedoremetente;
-    private int cpfdoremetente;
+    private int ContaDepositante;
+    private int ContaDepositario;
     private double valor;
-    private int agencia;
-    private int contadobeneficiado;
 
+    public Deposito(int ContaDepositante, int ContaDepositario, double valor) {
+        this.ContaDepositante = ContaDepositante;
+        this.ContaDepositario = ContaDepositario;
+        this.valor = valor;
+    }
+    
+    public Deposito() {
+        this.id = 0;
+        this.ContaDepositante = 0;
+        this.ContaDepositario = 0;
+        this.valor = 0;
+    }
+    
     public int getId() {
         return id;
-    }
-
-    public int getIdcontadoremetente() {
-        return idcontadoremetente;
-    }
-
-    public String getNomedoremetente() {
-        return nomedoremetente;
-    }
-
-    public int getCpfdoremetente() {
-        return cpfdoremetente;
-    }
-
-    public double getValor() {
-        return valor;
-    }
-
-    public int getAgencia() {
-        return agencia;
-    }
-
-    public int getContadobeneficiado() {
-        return contadobeneficiado;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setIdcontadoremetente(int idcontadoremetente) {
-        this.idcontadoremetente = idcontadoremetente;
+    public int getContaDepositante() {
+        return ContaDepositante;
     }
 
-    public void setNomedoremetente(String nomedoremetente) {
-        this.nomedoremetente = nomedoremetente;
+    public void setContaDepositante(int ContaDepositante) {
+        this.ContaDepositante = ContaDepositante;
+    }
+    
+    public int getContaDepositario() {
+        return ContaDepositario;
     }
 
-    public void setCpfdoremetente(int cpfdoremetente) {
-        this.cpfdoremetente = cpfdoremetente;
+    public void setContaDepositario(int ContaDepositario) {
+        this.ContaDepositario = ContaDepositario;
+    }
+
+    public double getValor() {
+        return valor;
     }
 
     public void setValor(double valor) {
         this.valor = valor;
     }
-
-    public void setAgencia(int agencia) {
-        this.agencia = agencia;
-    }
-
-    public void setContadobeneficiado(int contadobeneficiado) {
-        this.contadobeneficiado = contadobeneficiado;
-    }
+    
 }

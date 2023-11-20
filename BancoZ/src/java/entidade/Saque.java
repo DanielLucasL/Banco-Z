@@ -1,45 +1,39 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package entidade;
 
-/**
- *
- * @author User
- */
 public class Saque {
     private int id;
-    private int iddaconta;
-    private int cpf;
+    private int numConta;
     private double valor;
+
+    public Saque(int numConta, double valor) {
+        this.numConta = numConta;
+        this.valor = valor;
+    }
+    
+    public Saque() {
+        this.id = 0;
+        this.numConta = 0;
+        this.valor = 0;
+    }
 
     public int getId() {
         return id;
     }
 
-    public int getIddaconta() {
-        return iddaconta;
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public int getNumConta() {
+        return numConta;
     }
 
-    public int getCpf() {
-        return cpf;
+    public void setNumConta(int numConta) {
+        this.numConta = numConta;
     }
 
     public double getValor() {
         return valor;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setIddaconta(int iddaconta) {
-        this.iddaconta = iddaconta;
-    }
-
-    public void setCpf(int cpf) {
-        this.cpf = cpf;
     }
 
     public void setValor(double valor) {

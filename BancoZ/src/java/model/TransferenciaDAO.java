@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.sql.PreparedStatement;
@@ -9,110 +5,100 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import entidade.Transferencia;
-/**
- *
- * @author User
- */
-public class TransferenciaDAO implements Dao<Transferencia> {
-    @Override
-    public Transferencia get(int id) {
+
+public class TransferenciaDAO{
+
+        public void Inserir(Transferencia transferencia) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM Transferencias WHERE ID = ? ");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO contas (contadestino, contaorigem, valor)"
+                    + " VALUES (?,?,?)");
+            sql.setInt(1, transferencia.getContaDestino());
+            sql.setInt(2, transferencia.getContaOrigem());
+            sql.setDouble(3, transferencia.getValor());
+            sql.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        } finally {
+            conexao.closeConexao();
+        }
+    }
+
+    public Transferencia getConta(int id) throws Exception {
+        Conexao conexao = new Conexao();
+        try {
+            Transferencia transferencia = new Transferencia();
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM contas WHERE ID = ? ");
             sql.setInt(1, id);
             ResultSet resultado = sql.executeQuery();
-            Transferencia transferencia = new Transferencia();
-
             if (resultado != null) {
                 while (resultado.next()) {
                     transferencia.setId(Integer.parseInt(resultado.getString("ID")));
-                    transferencia.setSaque(resultado.getString("TRANSFERENCIA"));
-                    transferencia.setData(resultado.getString("DATA"));
-                    transferencia.setId(Integer.parseInt(resultado.getString("IDUSUARIO")));
+                    transferencia.setContaDestino(Integer.parseInt(resultado.getString("ContaDestino")));
+                    transferencia.setContaOrigem(Integer.parseInt(resultado.getString("ContaOrigem")));
+                    transferencia.setValor(Double.parseDouble(resultado.getString("VALOR")));
                 }
             }
             return transferencia;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Query de select (get transferencia) incorreta");
+            throw new RuntimeException("Query de select (get) incorreta");
         } finally {
             conexao.closeConexao();
         }
     }
 
-    @Override
-    public void insert(Transferencia t) {
-
+    public void Alterar(Transferencia transferencia) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Transferencia (transferencia, data, idusuario) VALUES (?,?,?)");
-            sql.setString(1, t.getTransferencia());
-            sql.setString(2, t.getData());
-            sql.setInt(3, t.getIdusuario());
+            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE contas SET contadestino = ?, contaorigem = ?, valor = ?  WHERE ID = ? ");
+            sql.setInt(1, transferencia.getContaDestino());
+            sql.setInt(2, transferencia.getContaOrigem());
+            sql.setDouble(3, transferencia.getValor());
             sql.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Query de insert (transferencia) incorreta");
+            throw new RuntimeException("Query de update (alterar) incorreta");
         } finally {
             conexao.closeConexao();
         }
     }
 
-    @Override
-    public void update(Transferencia t) {
+    public void Excluir(Transferencia transferencia) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE Transferencias SET transferencia = ?, data = ?, idusuario = ?, senha = ?  WHERE ID = ? ");
-            sql.setString(1, t.getTransferencia());
-            sql.setString(2, t.getData());
-            sql.setInt(3, t.getIdusuario());
-
+            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM contas WHERE ID = ? ");
+            sql.setInt(1, transferencia.getId());
             sql.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Query de update (alterar transferencia) incorreta");
+            throw new RuntimeException("Query de delete (excluir) incorreta");
         } finally {
             conexao.closeConexao();
         }
     }
 
-    @Override
-    public void delete(int id) {
-        Conexao conexao = new Conexao();
-        try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM Transferencias WHERE ID = ? ");
-            sql.setInt(1, id);
-            sql.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Query de delete (excluir transferencia) incorreta");
-        } finally {
-            conexao.closeConexao();
-        }
-    }
-
-    @Override
-    public ArrayList<Transferencia> getAll() {
-
+    public ArrayList<Transferencia> ListaDeTransferencia() {
         ArrayList<Transferencia> minhasTransferencias = new ArrayList();
         Conexao conexao = new Conexao();
         try {
-            String selectSQL = "SELECT * FROM Transferencias";
+            String selectSQL = "SELECT * FROM contas order by nome";
             PreparedStatement preparedStatement;
             preparedStatement = conexao.getConexao().prepareStatement(selectSQL);
             ResultSet resultado = preparedStatement.executeQuery();
             if (resultado != null) {
                 while (resultado.next()) {
-                    Transferencia Transferencia = new Transferencia(resultado.getInt("ID"),resultado.getString("TRANSFERENCIA"),
-                            resultado.getString("DATA"),
-                            resultado.getInt("IDUSUARIO"),
-                            resultado.getInt("IDCATEGORIA")
-                    );
-                    minhasTransferencias.add(Transferencia);
+                    Transferencia transferencia = new Transferencia(
+                            Integer.parseInt(resultado.getString("ContaDestino")),
+                            Integer.parseInt(resultado.getString("ContaOrigem")),
+                            Double.parseDouble(resultado.getString("VALOR")));
+                    transferencia.setId(Integer.parseInt(resultado.getString( "ID")));
+                    minhasTransferencias.add(transferencia);
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Query de select (GetAll) incorreta");
+            throw new RuntimeException("Query de select (ListaDeConta) incorreta");
         } finally {
             conexao.closeConexao();
         }
