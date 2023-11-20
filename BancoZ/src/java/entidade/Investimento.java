@@ -1,66 +1,53 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package entidade;
 
-/**
- *
- * @author User
- */
 public class Investimento {
     private int id;
-    private String nomedoinvestidor;
-    private int iddaconta;
-    private int cpf;
+    private int numConta;
     private double valor;
     private String tipo;
 
-    public int getId() {
-        return id;
+    public Investimento(int numConta, double valor, String tipo) {
+        this.numConta = numConta;
+        this.valor = valor;
+        this.tipo = tipo;
+    }
+    
+    public Investimento() {
+        this.id = 0;
+        this.numConta = 0;
+        this.valor = 0;
+        this.tipo = "";
+    }
+    
+    public int getNumConta() {
+        return numConta;
     }
 
-    public String getNomedoinvestidor() {
-        return nomedoinvestidor;
-    }
-
-    public int getIddaconta() {
-        return iddaconta;
-    }
-
-    public int getCpf() {
-        return cpf;
+    public void setNumConta(int numConta) {
+        this.numConta = numConta;
     }
 
     public double getValor() {
         return valor;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setNomedoinvestidor(String nomedoinvestidor) {
-        this.nomedoinvestidor = nomedoinvestidor;
-    }
-
-    public void setIddaconta(int iddaconta) {
-        this.iddaconta = iddaconta;
-    }
-
-    public void setCpf(int cpf) {
-        this.cpf = cpf;
-    }
-
     public void setValor(double valor) {
         this.valor = valor;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

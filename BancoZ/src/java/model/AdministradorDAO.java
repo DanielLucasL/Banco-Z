@@ -1,27 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import entidade.Administrador;
-/**
- *djshnbfiudncudsbfvdnsfuh
- * @author User
- */
+
 public class AdministradorDAO {
+    
     public void Inserir(Administrador administrador) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO administradores (nome, cpf, endereco, senha)"
+            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO administradores (nome, cpf, senha, email)"
                     + " VALUES (?,?,?,?)");
             sql.setString(1, administrador.getNome());
             sql.setString(2, administrador.getCpf());
-            sql.setString(3, administrador.getEndereco());
-            sql.setString(4, administrador.getSenha());
+            sql.setString(3, administrador.getSenha());
+            sql.setString(4, administrador.getEmail());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -43,8 +38,8 @@ public class AdministradorDAO {
                     administrador.setId(Integer.parseInt(resultado.getString("ID")));
                     administrador.setNome(resultado.getString("NOME"));
                     administrador.setCpf(resultado.getString("CPF"));
-                    administrador.setEndereco(resultado.getString("ENDERECO"));
                     administrador.setSenha(resultado.getString("SENHA"));
+                    administrador.setEmail(resultado.getString("EMAIL"));
                 }
             }
             return administrador;
@@ -56,15 +51,15 @@ public class AdministradorDAO {
         }
     }
 
-    public void Alterar(Administrador Administrador) throws Exception {
+    public void Alterar(Administrador administrador) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE usuarios SET nome = ?, cpf = ?, endereco = ?, senha = ?  WHERE ID = ? ");
-            sql.setString(1, Administrador.getNome());
-            sql.setString(2, Administrador.getCpf());
-            sql.setString(3, Administrador.getEndereco());
-            sql.setString(4, Administrador.getSenha());
-            sql.setInt(5, Administrador.getId());
+            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE administradores SET NOME = ?, CPF = ?, SENHA = ?, EMAIL = ?  WHERE ID = ?");
+            sql.setString(1, administrador.getNome());
+            sql.setString(2, administrador.getCpf());
+            sql.setString(3, administrador.getSenha());
+            sql.setString(4, administrador.getEmail());
+            sql.setInt(5, administrador.getId());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -74,11 +69,11 @@ public class AdministradorDAO {
         }
     }
 
-    public void Excluir(Administrador Administrador) throws Exception {
+    public void Excluir(Administrador administrador) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM administradores WHERE ID = ? ");
-            sql.setInt(1, Administrador.getId());
+            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM administradores WHERE ID = ?");
+            sql.setInt(1, administrador.getId());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -92,17 +87,19 @@ public class AdministradorDAO {
         ArrayList<Administrador> meusAdministradores = new ArrayList();
         Conexao conexao = new Conexao();
         try {
-            String selectSQL = "SELECT * FROM administradores order by nome";
+            String selectSQL = "SELECT * FROM administradores order by NOME";
             PreparedStatement preparedStatement;
             preparedStatement = conexao.getConexao().prepareStatement(selectSQL);
             ResultSet resultado = preparedStatement.executeQuery();
             if (resultado != null) {
                 while (resultado.next()) {
-                    Administrador administrador = new Administrador(resultado.getString("NOME"),
+                    Administrador administrador = new Administrador(
+                            resultado.getString("NOME"),
                             resultado.getString("CPF"),
-                            resultado.getString("ENDERECO"),
-                            resultado.getString("SENHA"));
-                    administrador.setId(Integer.parseInt(resultado.getString("id")));
+                            resultado.getString("SENHA"),
+                            resultado.getString("EMAIL"));
+                    administrador.setId(Integer.parseInt(resultado.getString("ID")));
+                    
                     meusAdministradores.add(administrador);
                 }
             }
@@ -127,8 +124,8 @@ public class AdministradorDAO {
                     administradorObtido.setId(Integer.parseInt(resultado.getString("ID")));
                     administradorObtido.setNome(resultado.getString("NOME"));
                     administradorObtido.setCpf(resultado.getString("CPF"));
-                    administradorObtido.setEndereco(resultado.getString("ENDERECO"));
                     administradorObtido.setSenha(resultado.getString("SENHA"));
+                    administradorObtido.setEmail(resultado.getString("EMAIL"));
                 }
             }
             return administradorObtido;

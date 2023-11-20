@@ -1,24 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package entidade;
 
-/**
- *
- * @author User
- */
 public class Transferencia {
     private int id;
-    private int idcontadoremetente;
-    private String nomedoremetente;
-    private int cpfdoremetente;
+    private int ContaDestino;
+    private int ContaOrigem;
     private double valor;
-    private int banco;
-    private int agencia;
-    private int contadobeneficiado;
-    private String tipodaconta;
 
+    public Transferencia(int ContaDestino, int ContaOrigem, double valor) {
+        this.ContaDestino = ContaDestino;
+        this.ContaOrigem = ContaOrigem;
+        this.valor = valor;
+    }
+    
+    public Transferencia() {
+        this.id = 0;
+        this.ContaDestino = 0;
+        this.ContaOrigem = 0;
+        this.valor = 0;
+    }
+    
     public int getId() {
         return id;
     }
@@ -26,29 +26,21 @@ public class Transferencia {
     public void setId(int id) {
         this.id = id;
     }
-
-    public int getIdcontadoremetente() {
-        return idcontadoremetente;
+    
+    public int getContaDestino() {
+        return ContaDestino;
     }
 
-    public void setIdcontadoremetente(int idcontadoremetente) {
-        this.idcontadoremetente = idcontadoremetente;
+    public void setContaDestino(int ContaDestino) {
+        this.ContaDestino = ContaDestino;
     }
 
-    public String getNomedoremetente() {
-        return nomedoremetente;
+    public int getContaOrigem() {
+        return ContaOrigem;
     }
 
-    public void setNomedoremetente(String nomedoremetente) {
-        this.nomedoremetente = nomedoremetente;
-    }
-
-    public int getCpfdoremetente() {
-        return cpfdoremetente;
-    }
-
-    public void setCpfdoremetente(int cpfdoremetente) {
-        this.cpfdoremetente = cpfdoremetente;
+    public void setContaOrigem(int ContaOrigem) {
+        this.ContaOrigem = ContaOrigem;
     }
 
     public double getValor() {
@@ -57,37 +49,5 @@ public class Transferencia {
 
     public void setValor(double valor) {
         this.valor = valor;
-    }
-
-    public int getBanco() {
-        return banco;
-    }
-
-    public void setBanco(int banco) {
-        this.banco = banco;
-    }
-
-    public int getAgencia() {
-        return agencia;
-    }
-
-    public void setAgencia(int agencia) {
-        this.agencia = agencia;
-    }
-
-    public int getContadobeneficiado() {
-        return contadobeneficiado;
-    }
-
-    public void setContadobeneficiado(int contadobeneficiado) {
-        this.contadobeneficiado = contadobeneficiado;
-    }
-
-    public String getTipodaconta() {
-        return tipodaconta;
-    }
-
-    public void setTipodaconta(String tipodaconta) {
-        this.tipodaconta = tipodaconta;
     }
 }

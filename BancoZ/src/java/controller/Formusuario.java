@@ -4,9 +4,8 @@
  */
 package controller;
 
-import java.Usuario;
+import entidade.Usuario;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author danie
  */
-@WebServlet(urlPatterns = {"/Formcliente"})
+@WebServlet(urlPatterns = {"/Formcliente3"})
 public class Formusuario extends HttpServlet {
 
     /**

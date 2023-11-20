@@ -1,119 +1,103 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
+import entidade.Conta;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import entidade.Conta;
 
-/**
- *
- * @author User
- */
-public class ContaDAO implements Dao<Conta> {
-    @Override
-    public Conta get(int id) {
+
+public class ContaDAO{
+    
+    public void Inserir(Conta conta) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM Contas WHERE ID = ? ");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO contas (cpf, saldo)"
+                    + " VALUES (?,?)");
+            sql.setString(1, conta.getCpf());
+            sql.setDouble(2, conta.getSaldo());
+            sql.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        } finally {
+            conexao.closeConexao();
+        }
+    }
+
+    public Conta getConta(int id) throws Exception {
+        Conexao conexao = new Conexao();
+        try {
+            Conta conta = new Conta();
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM contas WHERE ID = ? ");
             sql.setInt(1, id);
             ResultSet resultado = sql.executeQuery();
-            Conta comentario = new Conta();
-
             if (resultado != null) {
                 while (resultado.next()) {
-                    comentario.setId(Integer.parseInt(resultado.getString("ID")));
-                    comentario.setConta(resultado.getString("CONTA"));
-                    comentario.setData(resultado.getString("DATA"));
-                    comentario.setId(Integer.parseInt(resultado.getString("IDUSUARIO")));
+                    conta.setNumConta(Integer.parseInt(resultado.getString("NUMCONTA")));
+                    conta.setCpf(resultado.getString("CPF"));
+                    conta.setSaldo(Double.parseDouble(resultado.getString("SALDO")));
                 }
             }
-            return comentario;
+            return conta;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Query de select (get comentario) incorreta");
+            throw new RuntimeException("Query de select (get) incorreta");
         } finally {
             conexao.closeConexao();
         }
     }
 
-    @Override
-    public void insert(Conta t) {
-
+    public void Alterar(Conta conta) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Contas (conta, data, idusuario) VALUES (?,?,?)");
-            sql.setString(1, t.getConta());
-            sql.setString(2, t.getData());
-            sql.setInt(3, t.getIdusuario());
+            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE contas SET cpf = ?, saldo = ?  WHERE NUMCONTA = ? ");
+            sql.setString(1, conta.getCpf());
+            sql.setDouble(2, conta.getSaldo());
+            sql.setInt(3, conta.getNumConta());
             sql.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Query de insert (conta) incorreta");
+            throw new RuntimeException("Query de update (alterar) incorreta");
         } finally {
             conexao.closeConexao();
         }
     }
 
-    @Override
-    public void update(Conta t) {
+    public void Excluir(Conta conta) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE Contas SET conta = ?, data = ?, idusuario = ?, senha = ?  WHERE ID = ? ");
-            sql.setString(1, t.getConta());
-            sql.setString(2, t.getData());
-            sql.setInt(3, t.getIdusuario());
-
+            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM contas WHERE NUMCONTA = ? ");
+            sql.setInt(1, conta.getNumConta());
             sql.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Query de update (alterar conta) incorreta");
+            throw new RuntimeException("Query de delete (excluir) incorreta");
         } finally {
             conexao.closeConexao();
         }
     }
 
-    @Override
-    public void delete(int id) {
-        Conexao conexao = new Conexao();
-        try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM Contas WHERE ID = ? ");
-            sql.setInt(1, id);
-            sql.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Query de delete (excluir conta) incorreta");
-        } finally {
-            conexao.closeConexao();
-        }
-    }
-
-    @Override
-    public ArrayList<Conta> getAll() {
-
+    public ArrayList<Conta> ListaDeConta() {
         ArrayList<Conta> minhasContas = new ArrayList();
         Conexao conexao = new Conexao();
         try {
-            String selectSQL = "SELECT * FROM Contas";
+            String selectSQL = "SELECT * FROM contas order by nome";
             PreparedStatement preparedStatement;
             preparedStatement = conexao.getConexao().prepareStatement(selectSQL);
             ResultSet resultado = preparedStatement.executeQuery();
             if (resultado != null) {
                 while (resultado.next()) {
-                    Conta Conta = new Conta(resultado.getInt("ID"),resultado.getString("CONTA"),
-                            resultado.getString("DATA"),
-                            resultado.getInt("IDUSUARIO"),
-                            resultado.getInt("IDCATEGORIA")
-                    );
-                    minhasContas.add(Conta);
+                    Conta conta = new Conta(
+                            resultado.getString("CPF"),
+                            Integer.parseInt(resultado.getString("SALDO")));
+                    conta.setNumConta(Integer.parseInt(resultado.getString( "NUMCONTA")));
+                    minhasContas.add(conta);
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Query de select (GetAll) incorreta");
+            throw new RuntimeException("Query de select (ListaDeConta) incorreta");
         } finally {
             conexao.closeConexao();
         }
