@@ -1,19 +1,24 @@
 package entidade;
 
+import java.sql.Timestamp;
+
 public class Saque {
     private int id;
     private int numConta;
     private double valor;
+    private Timestamp data;
 
-    public Saque(int numConta, double valor) {
+    public Saque(int numConta, double valor, Timestamp data) {
         this.numConta = numConta;
         this.valor = valor;
+        this.data = data;
     }
     
     public Saque() {
         this.id = 0;
         this.numConta = 0;
         this.valor = 0;
+        this.data = new Timestamp(0);
     }
 
     public int getId() {
@@ -39,4 +44,13 @@ public class Saque {
     public void setValor(double valor) {
         this.valor = valor;
     }
+
+    public Timestamp getData() {
+        return data;
+    }
+
+    public void setData(Timestamp data) {
+        this.data = data;
+    }
+    
 }

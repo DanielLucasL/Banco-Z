@@ -11,11 +11,12 @@ public class DepositoDAO{
     public void Inserir(Deposito deposito) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO contas (contadepositante, contadepositario, valor)"
-                    + " VALUES (?,?,?)");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO depositos (contadepositante, contadepositario, valor, data)"
+                    + " VALUES (?,?,?,?)");
             sql.setInt(1, deposito.getContaDepositante());
             sql.setInt(2, deposito.getContaDepositario());
             sql.setDouble(3, deposito.getValor());
+            sql.setTimestamp(4, deposito.getData());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -25,11 +26,11 @@ public class DepositoDAO{
         }
     }
 
-    public Deposito getConta(int id) throws Exception {
+    public Deposito getDeposito(int id) throws Exception {
         Conexao conexao = new Conexao();
         try {
             Deposito deposito = new Deposito();
-            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM contas WHERE ID = ? ");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM depositos WHERE ID = ? ");
             sql.setInt(1, id);
             ResultSet resultado = sql.executeQuery();
             if (resultado != null) {
@@ -38,6 +39,7 @@ public class DepositoDAO{
                     deposito.setContaDepositante(Integer.parseInt(resultado.getString("ContaDepositante")));
                     deposito.setContaDepositario(Integer.parseInt(resultado.getString("ContaDepositario")));
                     deposito.setValor(Double.parseDouble(resultado.getString("VALOR")));
+                    deposito.setData(resultado.getTimestamp("DATA"));
                 }
             }
             return deposito;
@@ -52,10 +54,12 @@ public class DepositoDAO{
     public void Alterar(Deposito deposito) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE contas SET contadepositante = ?, contadepositario = ?, valor = ?  WHERE ID = ? ");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE depositos SET contadepositante = ?, contadepositario = ?, valor = ?, data=? WHERE ID = ?");
             sql.setInt(1, deposito.getContaDepositante());
             sql.setInt(2, deposito.getContaDepositario());
             sql.setDouble(3, deposito.getValor());
+            sql.setTimestamp(4, deposito.getData());
+            sql.setInt(5, deposito.getId());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -68,7 +72,7 @@ public class DepositoDAO{
     public void Excluir(Deposito deposito) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM contas WHERE ID = ? ");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM depositos WHERE ID = ? ");
             sql.setInt(1, deposito.getId());
             sql.executeUpdate();
 
@@ -79,11 +83,11 @@ public class DepositoDAO{
         }
     }
 
-    public ArrayList<Deposito> ListaDeDeposito() {
+    public ArrayList<Deposito> ListaDeDepositos() {
         ArrayList<Deposito> meusDepositos = new ArrayList();
         Conexao conexao = new Conexao();
         try {
-            String selectSQL = "SELECT * FROM contas order by nome";
+            String selectSQL = "SELECT * FROM depositos order by data";
             PreparedStatement preparedStatement;
             preparedStatement = conexao.getConexao().prepareStatement(selectSQL);
             ResultSet resultado = preparedStatement.executeQuery();
@@ -92,13 +96,14 @@ public class DepositoDAO{
                     Deposito deposito = new Deposito(
                             Integer.parseInt(resultado.getString("ContaDepositante")),
                             Integer.parseInt(resultado.getString("ContaDepositario")),
-                            Double.parseDouble(resultado.getString("VALOR")));
+                            Double.parseDouble(resultado.getString("VALOR")),
+                            resultado.getTimestamp("TIMESTAMP"));
                     deposito.setId(Integer.parseInt(resultado.getString( "ID")));
                     meusDepositos.add(deposito);
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Query de select (ListaDeConta) incorreta");
+            throw new RuntimeException("Query de select (ListaDeDepositos) incorreta");
         } finally {
             conexao.closeConexao();
         }

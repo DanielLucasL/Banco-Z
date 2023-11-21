@@ -4,7 +4,7 @@
  */
 package controller;
 
-import entidade.Usuario;
+import entidade.Cliente;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author danie
  */
-@WebServlet(urlPatterns = {"/Formcliente3"})
+@WebServlet(urlPatterns = {"/Formusuario"})
 public class Formusuario extends HttpServlet {
 
     /**
@@ -42,16 +42,18 @@ public class Formusuario extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Usuario usuario = new Usuario();
-        usuario.setTipo(request.getParameter("tipo")); 
-        usuario.setNome(request.getParameter("nome"));
-        usuario.setSenha(request.getParameter("senha"));
-        if(usuario.getTipo()=="cliente"){
+        Cliente cliente = new Cliente();
+        //cliente.setTipo(request.getParameter("tipo")); 
+        cliente.setId(Integer.parseInt(request.getParameter("id")));
+        cliente.setSenha(request.getParameter("senha"));
+        /*
+        if(cliente.getTipo()=="cliente"){
             
         }
-        if(usuario.getTipo()=="administrator"){
+        if(cliente.getTipo()=="administrator"){
             
         }
+        */
     }
 
     @Override

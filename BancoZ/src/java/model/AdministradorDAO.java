@@ -104,7 +104,7 @@ public class AdministradorDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Query de select (ListaDeUsuarios) incorreta");
+            throw new RuntimeException("Query de select (ListaDeAdm) incorreta");
         } finally {
             conexao.closeConexao();
         }
@@ -132,7 +132,7 @@ public class AdministradorDAO {
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            throw new RuntimeException("Query de select (get) incorreta");
+            throw new RuntimeException("Query de (login) incorreta");
         } finally {
             conexao.closeConexao();
         }

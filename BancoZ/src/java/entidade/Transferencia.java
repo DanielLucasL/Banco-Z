@@ -1,15 +1,19 @@
 package entidade;
 
+import java.sql.Timestamp;
+
 public class Transferencia {
     private int id;
     private int ContaDestino;
     private int ContaOrigem;
     private double valor;
+    private Timestamp data;
 
-    public Transferencia(int ContaDestino, int ContaOrigem, double valor) {
+    public Transferencia(int ContaDestino, int ContaOrigem, double valor, Timestamp data) {
         this.ContaDestino = ContaDestino;
         this.ContaOrigem = ContaOrigem;
         this.valor = valor;
+        this.data = data;
     }
     
     public Transferencia() {
@@ -17,6 +21,7 @@ public class Transferencia {
         this.ContaDestino = 0;
         this.ContaOrigem = 0;
         this.valor = 0;
+        this.data = new Timestamp(0);
     }
     
     public int getId() {
@@ -50,4 +55,13 @@ public class Transferencia {
     public void setValor(double valor) {
         this.valor = valor;
     }
+
+    public Timestamp getData() {
+        return data;
+    }
+
+    public void setData(Timestamp data) {
+        this.data = data;
+    }
+    
 }

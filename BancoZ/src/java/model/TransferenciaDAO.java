@@ -11,11 +11,12 @@ public class TransferenciaDAO{
         public void Inserir(Transferencia transferencia) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO contas (contadestino, contaorigem, valor)"
+            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO transferencias (contadestino, contaorigem, valor, data)"
                     + " VALUES (?,?,?)");
             sql.setInt(1, transferencia.getContaDestino());
             sql.setInt(2, transferencia.getContaOrigem());
             sql.setDouble(3, transferencia.getValor());
+            sql.setTimestamp(4, transferencia.getData());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -25,11 +26,11 @@ public class TransferenciaDAO{
         }
     }
 
-    public Transferencia getConta(int id) throws Exception {
+    public Transferencia getTranferencia(int id) throws Exception {
         Conexao conexao = new Conexao();
         try {
             Transferencia transferencia = new Transferencia();
-            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM contas WHERE ID = ? ");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM transferencias WHERE ID = ? ");
             sql.setInt(1, id);
             ResultSet resultado = sql.executeQuery();
             if (resultado != null) {
@@ -38,6 +39,7 @@ public class TransferenciaDAO{
                     transferencia.setContaDestino(Integer.parseInt(resultado.getString("ContaDestino")));
                     transferencia.setContaOrigem(Integer.parseInt(resultado.getString("ContaOrigem")));
                     transferencia.setValor(Double.parseDouble(resultado.getString("VALOR")));
+                    transferencia.setData(resultado.getTimestamp("DATA"));
                 }
             }
             return transferencia;
@@ -52,10 +54,12 @@ public class TransferenciaDAO{
     public void Alterar(Transferencia transferencia) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE contas SET contadestino = ?, contaorigem = ?, valor = ?  WHERE ID = ? ");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE transferencias SET contadestino = ?, contaorigem = ?, valor = ?, data = ?  WHERE ID = ?");
             sql.setInt(1, transferencia.getContaDestino());
             sql.setInt(2, transferencia.getContaOrigem());
             sql.setDouble(3, transferencia.getValor());
+            sql.setTimestamp(4, transferencia.getData());
+            sql.setInt(5, transferencia.getId());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -68,7 +72,7 @@ public class TransferenciaDAO{
     public void Excluir(Transferencia transferencia) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM contas WHERE ID = ? ");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM transferencias WHERE ID = ? ");
             sql.setInt(1, transferencia.getId());
             sql.executeUpdate();
 
@@ -83,7 +87,7 @@ public class TransferenciaDAO{
         ArrayList<Transferencia> minhasTransferencias = new ArrayList();
         Conexao conexao = new Conexao();
         try {
-            String selectSQL = "SELECT * FROM contas order by nome";
+            String selectSQL = "SELECT * FROM transferencias order by data";
             PreparedStatement preparedStatement;
             preparedStatement = conexao.getConexao().prepareStatement(selectSQL);
             ResultSet resultado = preparedStatement.executeQuery();
@@ -92,13 +96,14 @@ public class TransferenciaDAO{
                     Transferencia transferencia = new Transferencia(
                             Integer.parseInt(resultado.getString("ContaDestino")),
                             Integer.parseInt(resultado.getString("ContaOrigem")),
-                            Double.parseDouble(resultado.getString("VALOR")));
+                            Double.parseDouble(resultado.getString("VALOR")),
+                            resultado.getTimestamp("DATA"));
                     transferencia.setId(Integer.parseInt(resultado.getString( "ID")));
                     minhasTransferencias.add(transferencia);
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Query de select (ListaDeConta) incorreta");
+            throw new RuntimeException("Query de select (ListaDeTranferencias) incorreta");
         } finally {
             conexao.closeConexao();
         }

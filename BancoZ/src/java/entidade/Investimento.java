@@ -1,15 +1,19 @@
 package entidade;
 
+import java.sql.Timestamp;
+
 public class Investimento {
     private int id;
     private int numConta;
     private double valor;
     private String tipo;
+    private Timestamp data;
 
-    public Investimento(int numConta, double valor, String tipo) {
+    public Investimento(int numConta, double valor, String tipo, Timestamp data) {
         this.numConta = numConta;
         this.valor = valor;
         this.tipo = tipo;
+        this.data = data;
     }
     
     public Investimento() {
@@ -17,6 +21,7 @@ public class Investimento {
         this.numConta = 0;
         this.valor = 0;
         this.tipo = "";
+        this.data = new Timestamp(0);
     }
     
     public int getNumConta() {
@@ -50,4 +55,13 @@ public class Investimento {
     public void setId(int id) {
         this.id = id;
     }
+
+    public Timestamp getData() {
+        return data;
+    }
+
+    public void setData(Timestamp data) {
+        this.data = data;
+    }
+    
 }

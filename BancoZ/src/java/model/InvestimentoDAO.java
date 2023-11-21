@@ -1,118 +1,108 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import Inutil.Investimento;
-/**
- *
- * @author User
- */
-public class InvestimentoDAO implements Dao<Investimento> {
-    @Override
-    public Investimento get(int id) {
+import entidade.Investimento;
+
+public class InvestimentoDAO{
+    
+    public void Inserir(Investimento investimento) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM Investimentos WHERE ID = ? ");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO investimentos (numConta, valor, tipo, data)"
+                    + " VALUES (?,?,?,?)");
+            sql.setInt(1, investimento.getNumConta());
+            sql.setDouble(2, investimento.getValor());
+            sql.setString(3, investimento.getTipo());
+            sql.setTimestamp(4, investimento.getData());
+            sql.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        } finally {
+            conexao.closeConexao();
+        }
+    }
+
+    public Investimento getInvestimento(int id) throws Exception {
+        Conexao conexao = new Conexao();
+        try {
+            Investimento investimento = new Investimento();
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM investimentos WHERE ID = ? ");
             sql.setInt(1, id);
             ResultSet resultado = sql.executeQuery();
-            Investimento investimento = new Investimento();
-
             if (resultado != null) {
                 while (resultado.next()) {
                     investimento.setId(Integer.parseInt(resultado.getString("ID")));
-                    investimento.setInvestimento(resultado.getString("INVESTIMENTO"));
-                    investimento.setData(resultado.getString("DATA"));
-                    investimento.setId(Integer.parseInt(resultado.getString("IDUSUARIO")));
+                    investimento.setValor(Double.parseDouble(resultado.getString("VALOR")));
+                    investimento.setTipo(resultado.getString("TIPO"));
+                    investimento.setData(resultado.getTimestamp("DATA"));
                 }
             }
             return investimento;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Query de select (get investimento) incorreta");
+            throw new RuntimeException("Query de select (get) incorreta");
         } finally {
             conexao.closeConexao();
         }
     }
 
-    @Override
-    public void insert(Investimento t) {
-
+    public void Alterar(Investimento investimento) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Investimento (investimento, data, idusuario) VALUES (?,?,?)");
-            sql.setString(1, t.getInvestimento());
-            sql.setString(2, t.getData());
-            sql.setInt(3, t.getIdusuario());
+            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE investimentos SET numConta = ?, valor = ?, tipo = ?, data = ? WHERE ID = ?");
+            sql.setInt(1, investimento.getNumConta());
+            sql.setDouble(2, investimento.getValor());
+            sql.setString(3, investimento.getTipo());
+            sql.setTimestamp(4, investimento.getData());
+            sql.setInt(5, investimento.getId());
             sql.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Query de insert (investimento) incorreta");
+            throw new RuntimeException("Query de update (alterar) incorreta");
         } finally {
             conexao.closeConexao();
         }
     }
 
-    @Override
-    public void update(Investimento t) {
+    public void Excluir(Investimento investimento) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE Contas SET investimento = ?, data = ?, idusuario = ?, senha = ?  WHERE ID = ? ");
-            sql.setString(1, t.getInvestimento());
-            sql.setString(2, t.getData());
-            sql.setInt(3, t.getIdusuario());
-
+            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM investimentos WHERE ID = ? ");
+            sql.setInt(1, investimento.getId());
             sql.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Query de update (alterar investimento) incorreta");
+            throw new RuntimeException("Query de delete (excluir) incorreta");
         } finally {
             conexao.closeConexao();
         }
     }
 
-    @Override
-    public void delete(int id) {
-        Conexao conexao = new Conexao();
-        try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM Investimentos WHERE ID = ? ");
-            sql.setInt(1, id);
-            sql.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Query de delete (excluir investimento) incorreta");
-        } finally {
-            conexao.closeConexao();
-        }
-    }
-
-    @Override
-    public ArrayList<Investimento> getAll() {
-
+    public ArrayList<Investimento> ListaDeInvestimentos() {
         ArrayList<Investimento> meusInvestimentos = new ArrayList();
         Conexao conexao = new Conexao();
         try {
-            String selectSQL = "SELECT * FROM Investimentos";
+            String selectSQL = "SELECT * FROM investimentos order by data";
             PreparedStatement preparedStatement;
             preparedStatement = conexao.getConexao().prepareStatement(selectSQL);
             ResultSet resultado = preparedStatement.executeQuery();
             if (resultado != null) {
                 while (resultado.next()) {
-                    Investimento Investimento = new Investimento(resultado.getInt("ID"),resultado.getString("INVESTIMENTO"),
-                            resultado.getString("DATA"),
-                            resultado.getInt("IDUSUARIO"),
-                            resultado.getInt("IDCATEGORIA")
-                    );
-                    meusInvestimentos.add(Investimento);
+                    Investimento investimento = new Investimento(
+                            Integer.parseInt(resultado.getString("numConta")),
+                            Double.parseDouble(resultado.getString("VALOR")),
+                            resultado.getString("TIPO"),
+                            resultado.getTimestamp("TIMESTAMP"));
+                    investimento.setId(Integer.parseInt(resultado.getString( "ID")));
+                    meusInvestimentos.add(investimento);
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Query de select (GetAll) incorreta");
+            throw new RuntimeException("Query de select (ListaDeInvestimentos) incorreta");
         } finally {
             conexao.closeConexao();
         }
