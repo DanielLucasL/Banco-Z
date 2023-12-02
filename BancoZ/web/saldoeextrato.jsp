@@ -1,12 +1,19 @@
+<%-- 
+    Document   : saldoseextratos
+    Created on : 1 de dez. de 2023, 20:22:07
+    Author     : danie
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="entidade.Cliente"%>
+<%@page import="entidade.Conta"%>
+<%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
-<html style="height: 100%; margin: 0; overflow:hidden">
+
+<html style="height: 100%; margin: 0">
     <head>
         <title>TODO supply a title</title>
-    <meta charset="UTF-8">
+        <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link href="assets/css/bootstrap.css" rel="stylesheet">
    <link href="assets/css/all.css" rel="stylesheet">
@@ -14,14 +21,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
    <link rel="stylesheet" href="assets/css/bootstrap.rtl.min.css" type="text/css"/>
    <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css">
     </head>
-    <body style="height: 100%; margin: 0; overflow:hidden">
-          <form id="saque" class="row g-3 needs-validation" novalidate style="min-height:100%; overflow:hidden">
-            <div class="col-md-4">
-    <label for="validationCustom01" class="form-label"> Valor</label>
-    <input type="number" class="form-control" id="validationCustom01" required>
-  </div>
+    <body style="height: 100%; margin: 0">  
+</div>
+           <% 
+               ArrayList<Conta> listaConta = (ArrayList<Conta>) request.getAttribute("listaContas");
+               out.println("<div id='saldo' class='card'>"
+           + "<p class='card-text'>" + listaContas[cliente.getNumConta()].getSaldo() + "</p></div>");
+                                    %>
+   <form id="extrato" class="d-grid gap-2 needs-validation" action="/BancoZ/controller/ExtratoController" method="POST" style="min-height:50%">
   <div class="col-12">
-    <button class="btn btn-primary" type="submit">Submit form</button>
+      <div class="d-grid gap-2" style="min-height:50%"> 
+    <button class="btn btn-info" type="submit" value="<%=acao%>">Extrato</button>
+      </div>
   </div>
 </form>
         <div class="modal" id="ModalErroBD" tabindex="-1" role="dialog" aria-labelledby="fetchErrorModalLabel" aria-hidden="true">
@@ -51,13 +62,29 @@ Erro de Banco de Dados</h5>
             <div class="modal-header">
                 <h5 class="modal-title" id="successModalLabel"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-</svg> Saque feito com sucesso.</h5>
+</svg> Saldo obtido com sucesso.</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Saque feito com sucesso.</p>
+            </div>
+        </div>
+    </div>
+</div>
+        <div class="modal" id="ModalSucessoExtrato" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+</svg> Extrato obtido com sucesso.</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <jsp:include page="extrato.jsp" />  
             </div>
         </div>
     </div>
@@ -70,54 +97,18 @@ Erro de Banco de Dados</h5>
             <div class="modal-header">
                 <h5 class="modal-title" id="errorModalLabel"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-</svg> Erro para submeter formulário.</h5>
+</svg> Erro para devolver saldo.</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Houve um erro para submeter o formulário. Por favor, tente novamente.</p>
+                <p>Houve um erro para devolver saldo. Por favor, tente novamente.</p>
             </div>
         </div>
     </div>
 </div>
-<!-- Your script to handle form submission and show the modals goes here -->
-<script>
-    document.getElementById('saque').addEventListener('submit', function (event) {
-        event.preventDefault(); 
-        var isSubmissionSuccessful = Math.random() < 0.5;
-
-        if (isSubmissionSuccessful) {
-            // Simulate an error fetching information after successful submission
-            var isErrorFetchingData = Math.random() < 0.5; // Simulating a 50% chance of error
-
-            if (isErrorFetchingData) {
-                // Show the fetch error modal
-                var fetchErrorModal = new bootstrap.Modal(document.getElementById('ModalErroBD'));
-                fetchErrorModal.show();
-                setTimeout(function() {
-                    fetchErrorModal.hide();
-                }, 3000);
-            } else {
-                // Show the success modal
-                var successModal = new bootstrap.Modal(document.getElementById('ModalSucesso'));
-                successModal.show();
-                setTimeout(function() {
-                    successModal.hide();
-                }, 3000);
-            }
-        } else {
-            // Show the error modal
-            var errorModal = new bootstrap.Modal(document.getElementById('ModalErro'));
-            errorModal.show();
-             setTimeout(function() {
-                errorModal.hide();
-            }, 3000);
-        }
-    });
-</script>
-
-        <script src="assets/js/jquery-3.3.1.js"></script>
+         <script src="assets/js/jquery-3.3.1.js"></script>
    <script src="assets/js/popper.js"></script>
    <script src="assets/js/bootstrap.js"></script>
    <script src="assets/js/script.js"></script>
