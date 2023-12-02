@@ -1,11 +1,18 @@
+<%-- 
+    Document   : areaprivadaadministrador
+    Created on : 1 de dez. de 2023, 16:56:24
+    Author     : danie
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page import="entidade.Administrador" %>
+<%@page import="entidade.Cliente"%>
+<%@page import="entidade.Conta"%>
+<%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Area Privada</title>
           <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -18,16 +25,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
     </head>
     <body class="bg-success">
           <div class="container-lg text-primary-emphasis bg-primary-subtle border border-primary-subtle">
+                   <%
+                    HttpSession sessao = request.getSession(false);
+                    if (sessao != null) {
+                        Administrador administradorLogado = (Administrador) session.getAttribute("admininstrador");
+                        if (administradorLogado != null) { %>
            <ul class="nav text-info-emphasis bg-info-subtle border border-info-subtle">
  <li class="nav-item">
-    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07Z"/>
-</svg>Administrador:XXXXXX</a>
-  </li>
+            <%
+                  Administrador administradorLogado = (Administrador) session.getAttribute("administrador");
+                    out.println("<a class='nav-link disabled' href='#' tabindex='-1' aria-disabled='true'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-safe-fill' viewBox='0 0 16 16'>"
+                            + "<path d='M9.778 9.414A2 2 0 1 1 6.95 6.586a2 2 0 0 1 2.828 2.828z'/> "
+                            + "<path d='M2.5 0A1.5 1.5 0 0 0 1 1.5V3H.5a.5.5 0 0 0 0 1H1v3.5H.5a.5.5 0 0 0 0 1H1V12H.5a.5.5 0 0 0 0 1H1v1.5A1.5 1.5 0 0 0 2.5 16h12a1.5 1.5 0 0 0 1.5-1.5v-13A1.5 1.5 0 0 0 14.5 0h-12zm3.036 4.464 1.09 1.09a3.003 3.003 0 0 1 3.476 0l1.09-1.09a.5.5 0 1 1 .707.708l-1.09 1.09c.74 1.037.74 2.44 0 3.476l1.09 1.09a.5.5 0 1 1-.707.708l-1.09-1.09a3.002 3.002 0 0 1-3.476 0l-1.09 1.09a.5.5 0 1 1-.708-.708l1.09-1.09a3.003 3.003 0 0 1 0-3.476l-1.09-1.09a.5.5 0 1 1 .708-.708zM14 6.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 1 0z'/>"
+                            + "</svg> Usuário:"+administradorLogado.getNome()+ "</a>");
+                %>
+</li>
   <li class="nav-item">
     <a class="nav-link" href="#">Log out</a>
   </li>
-</ul>
+</ul>           
               <table class="table">
   <thead>
     <tr>
@@ -41,21 +57,37 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
     </tr>
   </thead>
   <tbody>
+   <%
+                                ArrayList<Cliente> listaCliente = (ArrayList<Cliente>) request.getAttribute("listaClientes");
+                                ArrayList<Conta> listaConta = (ArrayList<Conta>) request.getAttribute("listaContas");
+                                
+                                for (Cliente cliente : listaClientes) {
+                                    out.println("<tr>");
+                                    out.println("<th scope='col'>" + cliente.getId() + "</th>");
+                                    out.println("<th scope='col'>" + cliente.getCpf() + "</th>");
+                                    out.println("<th scope='col'>" + cliente.getSenha() + "</th>");
+                                    out.println("<th scope='col'>" + cliente.getEmail() + "</th>");
+                                     out.println("<th scope='col'>" + listaContas[cliente.getNumConta()].getSaldo() + "</th>");
+                                    %>
+                            <td>
+                            <a href="/ClienteController?acao=Alterar&id=<%=cliente.getId()%>" class="btn btn-warning">Alterar</a>
+                            <a href="/ClienteController?acao=Excluir&id=<%=cliente.getId()%>" class="btn btn-danger">Excluir</a></td>
+                            
+      <td>
+          <form id="extrato" class="d-grid gap-2 needs-validation" action="/BancoZ/controller/ExtratoController" method="POST" style="min-height:50%">
+           <div class="col-12">
+           <div class="d-grid gap-2" style="min-height:50%"> 
+           <input type="hidden" id="numConta" value="<%=cliente.getnumConta()%>">    
+           <button class="btn btn-info" type="submit" value="<%=acao%>">Extrato</button>
+           </div>
+           </div>
+</form>
+      </td>
+                            <%   out.println("</tr>");
+                                }
+                            %>
+
     <tr>
-      <th scope="row">0</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td><form id="extrato" class="d-grid gap-2 needs-validation" novalidate style="min-height:50%">
-  <div class="col-12">
-      <div class="d-grid gap-2" style="min-height:50%"> 
-    <button class="btn btn-info" type="submit">Extrato</button>
-      </div>
-  </div>
-</form></td>
-    </tr>
     <tr>
       <th scope="row">?</th>
       <td colspan="6"><div class="d-grid gap-1">
@@ -72,27 +104,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="registracliente">
-          <div class="mb-3">
-            <label for="nome" class="col-form-label">Nome Completo</label>
-            <input type="text" class="form-control" id="nome">
-          </div>
-          <div class="mb-3">
-            <label for="cpf" class="col-form-label">CPF</label>
-            <input type="text" class="form-control" id="cpf">
-          </div>
-            <div class="mb-3">
-            <label for="email" class="col-form-label">Email</label>
-            <input type="text" class="form-control" id="email">
-          </div>
-            <div class="mb-3">
-            <label for="cpf" class="col-form-label">Senha</label>
-            <input type="password" class="form-control" id="senha">
-          </div>
-            <div class="col-12">
-    <button class="btn btn-primary" type="submit">Submit form</button>
-  </div>
-        </form>
+        <jsp:include page="registracliente.jsp" />  
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -171,130 +183,25 @@ Erro de Banco de Dados</h5>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Extrato</p>
-                <br>
-                <p>Saída</p>
-                <br>
-                 <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Tipo</th>
-      <th scope="col">Data</th>
-      <th scope="col">Nome conta de destino(opcional)</th>
-      <th scope="col">CPF de destino(opcional)</th>
-      <th scope="col">Valor</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">0</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-  </tbody>
-</table>
-                 <br>
-                <p>Entrada</p>
-                <br>
-  <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Tipo</th>
-      <th scope="col">Data</th>
-      <th scope="col">Nome conta de origem(opcional)</th>
-      <th scope="col">CPF de origem(opcional)</th>
-      <th scope="col">Valor</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">0</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-  </tbody>
-</table>
+                 <jsp:include page="extrato.jsp" />  
             </div>
         </div>
     </div>
 </div>
-<script>
-    document.getElementById('registracliente').addEventListener('submit', function (event) {
-        event.preventDefault(); 
-        var isSubmissionSuccessful = Math.random() < 0.5;
+       <%  } else { %>
+  <ul class="nav text-info-emphasis bg-info-subtle border border-info-subtle">
+       <li class="nav-item">
+                           <div class="alert alert-warning" role="alerta">
+  Acesso negado!
+</div>
+           </li>
+      <li class="nav-item">
+                <a class="nav-link" href="index.jsp">Login</a>
+                </li>
+      </ul>
+                <%    }
+                    }%>
 
-        if (isSubmissionSuccessful) {
-            // Simulate an error fetching information after successful submission
-            var isErrorFetchingData = Math.random() < 0.5; // Simulating a 50% chance of error
-
-            if (isErrorFetchingData) {
-                // Show the fetch error modal
-                var fetchErrorModal = new bootstrap.Modal(document.getElementById('ModalErroBD'));
-                fetchErrorModal.show();
-                setTimeout(function() {
-                    fetchErrorModal.hide();
-                }, 3000);
-            } else {
-                // Show the success modal
-                var successModal = new bootstrap.Modal(document.getElementById('ModalSucesso'));
-                successModal.show();
-                setTimeout(function() {
-                    successModal.hide();
-                }, 3000);
-            }
-        } else {
-            // Show the error modal
-            var errorModal = new bootstrap.Modal(document.getElementById('ModalErro'));
-            errorModal.show();
-             setTimeout(function() {
-                errorModal.hide();
-            }, 3000);
-        }
-    });
-</script>
-<script>
-    document.getElementById('extrato').addEventListener('submit', function (event) {
-        event.preventDefault(); 
-        var isSubmissionSuccessful = Math.random() < 0.5;
-
-        if (isSubmissionSuccessful) {
-            // Simulate an error fetching information after successful submission
-            var isErrorFetchingData = Math.random() < 0.5; // Simulating a 50% chance of error
-
-            if (isErrorFetchingData) {
-                // Show the fetch error modal
-                var fetchErrorModal = new bootstrap.Modal(document.getElementById('ModalErroBD'));
-                fetchErrorModal.show();
-                setTimeout(function() {
-                    fetchErrorModal.hide();
-                }, 3000);
-            } else {
-                // Show the success modal
-                var successModal = new bootstrap.Modal(document.getElementById('ModalSucessoExtrato'));
-                successModal.show();
-                setTimeout(function() {
-                    successModal.hide();
-                }, 3000);
-            }
-        } else {
-            // Show the error modal
-            var errorModal = new bootstrap.Modal(document.getElementById('ModalErro'));
-            errorModal.show();
-             setTimeout(function() {
-                errorModal.hide();
-            }, 3000);
-        }
-    });
-</script>
-        
    <script src="assets/js/jquery-3.3.1.js"></script>
    <script src="assets/js/popper.js"></script>
    <script src="assets/js/bootstrap.js"></script>
@@ -302,3 +209,4 @@ Erro de Banco de Dados</h5>
    <script src="assets/js/script.js"></script>
     </body>
 </html>
+

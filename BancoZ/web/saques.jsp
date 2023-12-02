@@ -1,12 +1,15 @@
+<%-- 
+    Document   : saques
+    Created on : 1 de dez. de 2023, 20:20:26
+    Author     : danie
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
 <html style="height: 100%; margin: 0; overflow:hidden">
     <head>
         <title>TODO supply a title</title>
-   <meta charset="UTF-8">
+    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link href="assets/css/bootstrap.css" rel="stylesheet">
    <link href="assets/css/all.css" rel="stylesheet">
@@ -15,21 +18,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
    <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css">
     </head>
     <body style="height: 100%; margin: 0; overflow:hidden">
-        <form id="investimento" class="row g-3 needs-validation" novalidate style="min-height:100%; overflow:hidden">
-            <div class="col-md-6">
+          <form id="saque" class="row g-3 needs-validation" action="/BancoZ/controller/SaqueController" method="POST" style="min-height:100%; overflow:hidden">
+             <%
+                    String msgError = (String) request.getAttribute("msgError");
+                    if ((msgError != null) && (!msgError.isEmpty())) {%>
+                <div class="alert alert-danger" role="alert">
+                    <%= msgError%>
+                </div>
+                <% }%>
+              <div class="col-md-4">
     <label for="validationCustom01" class="form-label"> Valor</label>
     <input type="number" class="form-control" id="validationCustom01" required>
   </div>
-     <div class="col-md-6">
-    <label for="validationCustom04" class="form-label">Tipo de investimento</label>
-    <select class="form-select" id="validationCustom04" required>
-      <option selected disabled value="">Escolha...</option>
-      <option value="CDP">CDP</option>
-      <option value="Poupança">Tesouro Direto</option>
-    </select>
-  </div>
   <div class="col-12">
-    <button class="btn btn-primary" type="submit">Submit form</button>
+    <button class="btn btn-primary" type="submit" value="<%=acao%>">Submit form</button>
   </div>
 </form>
         <div class="modal" id="ModalErroBD" tabindex="-1" role="dialog" aria-labelledby="fetchErrorModalLabel" aria-hidden="true">
@@ -59,13 +61,13 @@ Erro de Banco de Dados</h5>
             <div class="modal-header">
                 <h5 class="modal-title" id="successModalLabel"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-</svg> Investimento feito com sucesso.</h5>
+</svg> Saque feito com sucesso.</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Investimento feito com sucesso.</p>
+                <p>Saque feito com sucesso.</p>
             </div>
         </div>
     </div>
@@ -89,42 +91,8 @@ Erro de Banco de Dados</h5>
         </div>
     </div>
 </div>
-<!-- Your script to handle form submission and show the modals goes here -->
-<script>
-    document.getElementById('investimento').addEventListener('submit', function (event) {
-        event.preventDefault(); 
-        var isSubmissionSuccessful = Math.random() < 0.5;
 
-        if (isSubmissionSuccessful) {
-            // Simulate an error fetching information after successful submission
-            var isErrorFetchingData = Math.random() < 0.5; // Simulating a 50% chance of error
-
-            if (isErrorFetchingData) {
-                // Show the fetch error modal
-                var fetchErrorModal = new bootstrap.Modal(document.getElementById('ModalErroBD'));
-                fetchErrorModal.show();
-                setTimeout(function() {
-                    fetchErrorModal.hide();
-                }, 3000);
-            } else {
-                // Show the success modal
-                var successModal = new bootstrap.Modal(document.getElementById('ModalSucesso'));
-                successModal.show();
-                setTimeout(function() {
-                    successModal.hide();
-                }, 3000);
-            }
-        } else {
-            // Show the error modal
-            var errorModal = new bootstrap.Modal(document.getElementById('ModalErro'));
-            errorModal.show();
-             setTimeout(function() {
-                errorModal.hide();
-            }, 3000);
-        }
-    });
-</script>
-    <script src="assets/js/jquery-3.3.1.js"></script>
+        <script src="assets/js/jquery-3.3.1.js"></script>
    <script src="assets/js/popper.js"></script>
    <script src="assets/js/bootstrap.js"></script>
    <script src="assets/js/script.js"></script>

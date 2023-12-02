@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+<%-- 
+    Document   : index
+    Created on : 30 de nov. de 2023, 19:57:04
+    Author     : danie
+--%>
 
--->
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html>
     <head>
         <title>TODO supply a title</title>
@@ -14,12 +15,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
    <link href="assets/css/styles.css" rel="stylesheet">
    <link rel="stylesheet" href="assets/css/bootstrap.rtl.min.css" type="text/css"/>
    <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css">
-
-
-
-
-
-
     </head>
     <body class="bg-success">
         <div class="container text-primary-emphasis bg-primary-subtle border border-primary-subtle">
@@ -51,10 +46,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
       </ul>
     </div>
   </div>
-</nav>
+</nav>           
             <br>
-        <form id="login" action="Formusuario" method="post">
-  <select class="form-select" aria-label="Default select example" name="tipo">
+                <%
+                    String msgError = (String) request.getAttribute("msgError");
+                    if ((msgError != null) && (!msgError.isEmpty())) {%>
+                <div class="alert alert-danger" role="alert">
+                    <%= msgError%>
+                </div>
+                <% }%>
+        <form id="login" action="/BancoZ/controller/Login<%= request.getParameter("tipo") %>Controller" method="POST">
+  <select class="form-select" aria-label="Default select example"id="tipo" name="tipo">
   <option selected value="cliente">Cliente</option>
   <option value="administrator">Administrator</option>
 </select>     
@@ -66,7 +68,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
     <label for="Senha" class="form-label">Senha</label>
     <input type="password" class="form-control" name="senha">
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary" value="<%=acao%>">Submeter</button>
 </form>
         <br>
   <div id="missao" class="card">
@@ -195,40 +197,6 @@ Erro de Banco de Dados</h5>
     </div>
 </div>
 <!-- Your script to handle form submission and show the modals goes here -->
-<script>
-    document.getElementById('login').addEventListener('submit', function (event) {
-        event.preventDefault(); 
-        var isSubmissionSuccessful = Math.random() < 0.5;
-
-        if (isSubmissionSuccessful) {
-            // Simulate an error fetching information after successful submission
-            var isErrorFetchingData = Math.random() < 0.5; // Simulating a 50% chance of error
-
-            if (isErrorFetchingData) {
-                // Show the fetch error modal
-                var fetchErrorModal = new bootstrap.Modal(document.getElementById('ModalErroBD'));
-                fetchErrorModal.show();
-                setTimeout(function() {
-                    fetchErrorModal.hide();
-                }, 3000);
-            } else {
-                // Show the success modal
-                var successModal = new bootstrap.Modal(document.getElementById('ModalSucesso'));
-                successModal.show();
-                setTimeout(function() {
-                    successModal.hide();
-                }, 3000);
-            }
-        } else {
-            // Show the error modal
-            var errorModal = new bootstrap.Modal(document.getElementById('ModalErro'));
-            errorModal.show();
-             setTimeout(function() {
-                errorModal.hide();
-            }, 3000);
-        }
-    });
-</script>
    <script src="assets/js/jquery-3.3.1.js"></script>
    <script src="assets/js/popper.js"></script>
    <script src="assets/js/bootstrap.js"></script>
@@ -236,3 +204,4 @@ Erro de Banco de Dados</h5>
     <script src="src/java/Formusuario.java"></script>
     </body>
 </html>
+

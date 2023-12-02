@@ -1,8 +1,11 @@
+<%-- 
+    Document   : depositos
+    Created on : 1 de dez. de 2023, 20:20:39
+    Author     : danie
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
 <html style="height: 100%; margin: 0; overflow:hidden">
     <head>
         <title>TODO supply a title</title>
@@ -15,8 +18,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
    <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css">
     </head>
     <body style="height: 100%; margin: 0; overflow:hidden">
-         <form id="deposito" class="row g-3 needs-validation" novalidate style="min-height:100%; overflow:hidden">
-            <div class="col-md-6">
+         <form id="deposito" class="row g-3 needs-validation" action="/BancoZ/controller/DepositoController" method="POST" style="min-height:100%; overflow:hidden">
+             <%
+                    String msgError = (String) request.getAttribute("msgError");
+                    if ((msgError != null) && (!msgError.isEmpty())) {%>
+                <div class="alert alert-danger" role="alert">
+                    <%= msgError%>
+                </div>
+                <% }%>
+             <div class="col-md-6">
     <label for="validationCustom01" class="form-label"> Valor</label>
     <input type="number" class="form-control" id="validationCustom01" required>
   </div>
@@ -31,7 +41,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
     </div>
   </div>
   <div class="col-12">
-    <button class="btn btn-primary" type="submit">Submit form</button>
+    <button class="btn btn-primary" type="submit" value="<%=acao%>">Submeter</button>
   </div>
              <div class="modal" id="ModalErroBD" tabindex="-1" role="dialog" aria-labelledby="fetchErrorModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -91,40 +101,6 @@ Erro de Banco de Dados</h5>
     </div>
 </div>
 <!-- Your script to handle form submission and show the modals goes here -->
-<script>
-    document.getElementById('deposito').addEventListener('submit', function (event) {
-        event.preventDefault(); 
-        var isSubmissionSuccessful = Math.random() < 0.5;
-
-        if (isSubmissionSuccessful) {
-            // Simulate an error fetching information after successful submission
-            var isErrorFetchingData = Math.random() < 0.5; // Simulating a 50% chance of error
-
-            if (isErrorFetchingData) {
-                // Show the fetch error modal
-                var fetchErrorModal = new bootstrap.Modal(document.getElementById('ModalErroBD'));
-                fetchErrorModal.show();
-                setTimeout(function() {
-                    fetchErrorModal.hide();
-                }, 3000);
-            } else {
-                // Show the success modal
-                var successModal = new bootstrap.Modal(document.getElementById('ModalSucesso'));
-                successModal.show();
-                setTimeout(function() {
-                    successModal.hide();
-                }, 3000);
-            }
-        } else {
-            // Show the error modal
-            var errorModal = new bootstrap.Modal(document.getElementById('ModalErro'));
-            errorModal.show();
-             setTimeout(function() {
-                errorModal.hide();
-            }, 3000);
-        }
-    });
-</script>
 </form>
    <script src="assets/js/jquery-3.3.1.js"></script>
    <script src="assets/js/popper.js"></script>
@@ -133,3 +109,4 @@ Erro de Banco de Dados</h5>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
+
