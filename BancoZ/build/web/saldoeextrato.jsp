@@ -1,8 +1,15 @@
+<%-- 
+    Document   : saldoseextratos
+    Created on : 1 de dez. de 2023, 20:22:07
+    Author     : danie
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="entidade.Cliente"%>
+<%@page import="entidade.Conta"%>
+<%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
+
 <html style="height: 100%; margin: 0">
     <head>
         <title>TODO supply a title</title>
@@ -14,18 +21,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
    <link rel="stylesheet" href="assets/css/bootstrap.rtl.min.css" type="text/css"/>
    <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css">
     </head>
-    <body style="height: 100%; margin: 0">
-            <form id="saldo" class="d-grid gap-2 needs-validation" novalidate style="min-height:50%">
-  <div class="col-12">
-       <div class="d-grid gap-2" style="min-height:50%"> 
-    <button class="btn btn-info" type="submit">Saldo</button>
-       </div>
-  </div>
-</form>
-   <form id="extrato" class="d-grid gap-2 needs-validation" novalidate style="min-height:50%">
+    <body style="height: 100%; margin: 0">  
+</div>
+           <% 
+               ArrayList<Conta> listaConta = (ArrayList<Conta>) request.getAttribute("listaContas");
+               out.println("<div id='saldo' class='card'>"
+           + "<p class='card-text'>" + listaContas[cliente.getNumConta()].getSaldo() + "</p></div>");
+                                    %>
+   <form id="extrato" class="d-grid gap-2 needs-validation" action="/BancoZ/controller/ExtratoController" method="POST" style="min-height:50%">
   <div class="col-12">
       <div class="d-grid gap-2" style="min-height:50%"> 
-    <button class="btn btn-info" type="submit">Extrato</button>
+    <button class="btn btn-info" type="submit" value="<%=acao%>">Extrato</button>
       </div>
   </div>
 </form>
@@ -62,7 +68,6 @@ Erro de Banco de Dados</h5>
                 </button>
             </div>
             <div class="modal-body">
-                <p>O saldo é: R$ XXXX,XX</p>
             </div>
         </div>
     </div>
@@ -79,57 +84,7 @@ Erro de Banco de Dados</h5>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Extrato</p>
-                <br>
-                <p>Saída</p>
-                <br>
-                 <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Tipo</th>
-      <th scope="col">Nome conta de destino(opcional)</th>
-      <th scope="col">CPF de destino(opcional)</th>
-      <th scope="col">Valor</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">0</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-  </tbody>
-</table>
-                 <br>
-                <p>Entrada</p>
-                <br>
-  <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Tipo</th>
-      <th scope="col">Nome conta de origem(opcional)</th>
-      <th scope="col">CPF de origem(opcional)</th>
-      <th scope="col">Valor</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">0</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-  </tbody>
-</table>
+                <jsp:include page="extrato.jsp" />  
             </div>
         </div>
     </div>
@@ -153,75 +108,6 @@ Erro de Banco de Dados</h5>
         </div>
     </div>
 </div>
-<!-- Your script to handle form submission and show the modals goes here -->
-<script>
-    document.getElementById('saldo').addEventListener('submit', function (event) {
-        event.preventDefault(); 
-        var isSubmissionSuccessful = Math.random() < 0.5;
-
-        if (isSubmissionSuccessful) {
-            // Simulate an error fetching information after successful submission
-            var isErrorFetchingData = Math.random() < 0.5; // Simulating a 50% chance of error
-
-            if (isErrorFetchingData) {
-                // Show the fetch error modal
-                var fetchErrorModal = new bootstrap.Modal(document.getElementById('ModalErroBD'));
-                fetchErrorModal.show();
-                setTimeout(function() {
-                    fetchErrorModal.hide();
-                }, 3000);
-            } else {
-                // Show the success modal
-                var successModal = new bootstrap.Modal(document.getElementById('ModalSucesso'));
-                successModal.show();
-                setTimeout(function() {
-                    successModal.hide();
-                }, 3000);
-            }
-        } else {
-            // Show the error modal
-            var errorModal = new bootstrap.Modal(document.getElementById('ModalErro'));
-            errorModal.show();
-             setTimeout(function() {
-                errorModal.hide();
-            }, 3000);
-        }
-    });
-</script>
-<script>
-    document.getElementById('extrato').addEventListener('submit', function (event) {
-        event.preventDefault(); 
-        var isSubmissionSuccessful = Math.random() < 0.5;
-
-        if (isSubmissionSuccessful) {
-            // Simulate an error fetching information after successful submission
-            var isErrorFetchingData = Math.random() < 0.5; // Simulating a 50% chance of error
-
-            if (isErrorFetchingData) {
-                // Show the fetch error modal
-                var fetchErrorModal = new bootstrap.Modal(document.getElementById('ModalErroBD'));
-                fetchErrorModal.show();
-                setTimeout(function() {
-                    fetchErrorModal.hide();
-                }, 3000);
-            } else {
-                // Show the success modal
-                var successModal = new bootstrap.Modal(document.getElementById('ModalSucessoExtrato'));
-                successModal.show();
-                setTimeout(function() {
-                    successModal.hide();
-                }, 3000);
-            }
-        } else {
-            // Show the error modal
-            var errorModal = new bootstrap.Modal(document.getElementById('ModalErro'));
-            errorModal.show();
-             setTimeout(function() {
-                errorModal.hide();
-            }, 3000);
-        }
-    });
-</script>
          <script src="assets/js/jquery-3.3.1.js"></script>
    <script src="assets/js/popper.js"></script>
    <script src="assets/js/bootstrap.js"></script>
