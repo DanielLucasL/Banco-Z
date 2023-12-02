@@ -13,6 +13,11 @@ public class Administrador {
         this.senha = senha;
         this.email = email;
     }
+    
+    public Administrador(String cpf, String senha) {
+        this.cpf = cpf;
+        this.senha = senha;
+    }
 
     public Administrador() {
         this.id = 0;
