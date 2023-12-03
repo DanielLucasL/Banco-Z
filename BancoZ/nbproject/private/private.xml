@@ -2,20 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/johan/Documents/GitHub/Banco-Z/BancoZ/src/java/model/AdministradorDAO.java</file>
-            <file>file:/C:/Users/johan/Documents/GitHub/Banco-Z/BancoZ/src/java/model/TransferenciaDAO.java</file>
-            <file>file:/C:/Users/johan/Documents/GitHub/Banco-Z/BancoZ/src/java/model/Conexao.java</file>
-            <file>file:/C:/Users/johan/Documents/GitHub/Banco-Z/BancoZ/src/java/model/SaqueDAO.java</file>
-            <file>file:/C:/Users/johan/Documents/GitHub/Banco-Z/BancoZ/src/java/model/DepositoDAO.java</file>
-            <file>file:/C:/Users/johan/Documents/GitHub/Banco-Z/BancoZ/src/java/entidade/Administrador.java</file>
-            <file>file:/C:/Users/johan/Documents/GitHub/Banco-Z/BancoZ/src/java/model/ContaDAO.java</file>
-            <file>file:/C:/Users/johan/Documents/GitHub/Banco-Z/BancoZ/src/java/model/InvestimentoDAO.java</file>
-            <file>file:/C:/Users/johan/Documents/GitHub/Banco-Z/BancoZ/src/java/entidade/Saque.java</file>
-            <file>file:/C:/Users/johan/Documents/GitHub/Banco-Z/BancoZ/src/java/entidade/Deposito.java</file>
-            <file>file:/C:/Users/johan/Documents/GitHub/Banco-Z/BancoZ/src/java/entidade/Investimento.java</file>
-            <file>file:/C:/Users/johan/Documents/GitHub/Banco-Z/BancoZ/src/java/model/ClienteDAO.java</file>
-            <file>file:/C:/Users/johan/Documents/GitHub/Banco-Z/BancoZ/src/java/model/TipoDAO.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

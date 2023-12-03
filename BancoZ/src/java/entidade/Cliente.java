@@ -8,13 +8,15 @@ public class Cliente{
     private String cpf;
     private String senha;
     private String email;
+    private double saldo;
 
-    public Cliente(int numConta, String nome, String cpf, String senha, String email) {
+    public Cliente(int numConta, String nome, String cpf, String senha, String email, double saldo) {
         this.numConta = numConta;
         this.nome = nome;
         this.cpf = cpf;
         this.senha = senha;
         this.email = email;
+        this.saldo = saldo;
     }
 
     public Cliente(String cpf, String senha) {
@@ -29,8 +31,9 @@ public class Cliente{
         this.cpf = "";
         this.senha = "";
         this.email = "";
+        this.saldo = 0.0;
     }
-
+    
     public int getId() {
         return id;
     }
@@ -78,5 +81,12 @@ public class Cliente{
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    public double getSaldo() {
+        return saldo;
+    }
 
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
 }
